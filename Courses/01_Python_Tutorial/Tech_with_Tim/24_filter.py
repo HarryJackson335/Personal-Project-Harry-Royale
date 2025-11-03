@@ -1,4 +1,3 @@
-"""
 x = [1, 2, 2, 32, 3, 4, 5, 4, 32, 21, 100, 313, 23, 142, 150]
 
 '''
@@ -16,7 +15,7 @@ mp = filter(lambda i: i % 2 == 0, x)
 # print(mp) # Prints the map object ---> useful if we are iterating over it
 print(list(mp))
 
-"""
+
 
 """
 # Another method to do the same thing above
