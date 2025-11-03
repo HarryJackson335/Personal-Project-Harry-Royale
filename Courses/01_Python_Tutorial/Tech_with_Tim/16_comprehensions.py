@@ -17,11 +17,14 @@ x = {i:0 for i in range(100) if i % 5 == 0}
 x = {i for i in range(100) if i % 5 == 0} 
 
 # Tuple Comprehension
-
-# We do not do this:
+'''
+We do not do this:
 # x = (i for i in range(100) if i % 5 == 0) # --> Returns a generator object
 
-# Instead we do this:
+Instead we do this:
+x = tuple(i for i in range(100) if i % 5 == 0)
+'''
+
 x = tuple(i for i in range(100) if i % 5 == 0)
 
 print(x)
