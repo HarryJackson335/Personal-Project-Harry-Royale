@@ -25,7 +25,7 @@ names = ['Agnetha', 'Björn', 'Benny', 'Anni-Frid'] # Lists are mutable. Element
 # Sets are unique and are list like that cannot contain duplicate values.
 unique = {1, 2, 3, 4, 4, 5}
 
-# We can add duplicate values but they will be ignored when we print the set.
+# We can add duplicate values, but they will be ignored when we print the set.
 print(unique)  # Output: {1, 2, 3, 4, 5}
 
 # Dictionary values ---> Dictionaries are list like structures that holds key-value pairs.
@@ -41,11 +41,20 @@ print(10 + int(number)) # Error occurs: Strings can be added to other strings bu
 
 '''
 
-numbers = 'ten'
+numbers = 'ten' #
 
 # When doing type conversion, we:
 #   convert a value using a function
-#   pass in the value for IB linjen.
-#   the function returns the converted value.
-print(10 + int(number)) # Error occurs: Cannot convert non-numeric string to integer
+#   pass in the type of conversion and the value.
+        #   int() - converts to integer
+        #   float() - converts to float
+        #   str() - converts to string
+        #   bool() - converts to boolean
+        #   list() - converts to list
+        #   tuple() - converts to tuple
+        #   set() - converts to set
 
+#   the respective function returns the respective converted value.
+print(10 + int(numbers)) # Error occurs: Cannot convert non-numeric string to integer
+
+print(float('123.456')) # Output: 123.456
