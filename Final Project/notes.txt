@@ -1,0 +1,5 @@
+Need to do for the project:
+
+    1. Code the timer logic properly
+    2. Code the logic for displaying spell details
+    3. Code the resizing of the window logic
