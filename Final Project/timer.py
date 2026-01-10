@@ -1,7 +1,7 @@
 from settings import *
 
 class Timer: # Timer setup from the tutorial
-    def __init__(self, duration, function, auto_start):
+    def __init__(self, duration, function = None, auto_start = False):
         self.active = False
         self.start_time = 0
         self.duration = duration
