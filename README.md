@@ -12,6 +12,8 @@
 
 ##### Note: The files shown in these folders are written by me, although there are certain parts where the code shares some resemblance to the code found in the pygame tutorial folder. This is because of how Pygame code is often structured and also because I wanted that specific functionality in my game and so I wrote the exact same code as given in the pygame tutorial folder.
 
-#### 3. Research and Evidence: This folder contains the additional research that I have done and my Personal Project report and it also contains the screenshots that I used for my Personal Project report
+#### 4. Research and Evidence: This folder contains the additional research that I have done and my Personal Project report and it also contains the screenshots that I used for my Personal Project report
+
+#### 5. Terminal Version: This folder contains the terminal version of my game that I created before starting my research for my learning goal as a fun experimental project.
 
 ##### Note to myself: Add Personal Project Report and organise this folder.
