@@ -44,7 +44,7 @@ class Game:
         except AttributeError as e: print(f"Error: {e}")
         
         # UI Setup
-        self.ui = UI(self.player, self.running)
+        self.ui = UI(self.player)
         self.opponent_ui = Opponent_UI(self.enemy)
 
         # Animation setup
@@ -58,23 +58,12 @@ class Game:
     def handle_ui_input(self):
         if self.ui.chosen_spell != None:    
             self.player_active = False
-            
-            if self.player.mana >= SPELLS[self.ui.chosen_spell]['mana_cost']:
-                if SPELLS[self.ui.chosen_spell]['spell_on'] == 'player': self.protect_player()
-                else: self.attack_opponent(self.ui.chosen_spell, self.enemy, SPELLS[self.ui.chosen_spell]['animation image'])
-                
-                # Starting the Player Turn timer
-                self.timers['Player Turn'].start()
-            
-            else:
-                warning_textbox = pygame.Surface((400, 200))
-                warning_textbox_rect = warning_textbox.get_frect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+              
+            # Starting the Player Turn timer
+            self.timers['Player Turn'].start()
 
-                warning_font = pygame.font.Font(None, 30)
-                warning_surf = warning_font.render('Not enough mana! Choose another spell', True, COLORS['white'], COLORS['green'])
-                warning_rect = warning_surf.get_frect(center = warning_textbox_rect.center)
-                self.screen.blit(warning_surf, warning_rect)
-                self.player_turn()
+            if SPELLS[self.ui.chosen_spell]['spell_on'] == 'player': self.protect_player()
+            else: self.attack_opponent(self.ui.chosen_spell, self.enemy, SPELLS[self.ui.chosen_spell]['animation image'])
             
     def enemy_turn(self):  
         if self.enemy.health > 0:
@@ -100,13 +89,34 @@ class Game:
         self.animated_sprite = AnimatedSprite(spell, target, attack, self.animation_assets)
         self.animated_sprite_destroyer = Timer(1000, self.animated_sprite.kill, True)       
         
-        if target == self.enemy:
-            target.health -= SPELLS[spell]['damage']
-            self.player.mana -= SPELLS[spell]['mana_cost']
-       
-        else: 
-            target.health -= randint(20, 30)
-            self.timers['Opponent Turn'].start()
+        target.health -= SPELLS[spell]['damage'] if target == self.enemy else randint(20, 30)
+        self.player.mana -= SPELLS[spell]['mana_cost'] if target == self.enemy else 0        
+        self.timers['Opponent Turn'].start()
+
+        # Alternate ways to get the same result with different steps involved for each ... explained in attacking logic explanation 
+            # if target == self.player: self.timers['Opponent Turn'].start()
+            # if target == self.enemy: self.timers['Opponent Turn'].start()
+
+    ''' Attacking logic explanation
+    target: self.player
+    enemy attacks player
+    the timer starts
+    player turn
+    target is self.enemy
+
+    target: self.enemy
+    player chooses spell
+    player attacks enemy
+    the timer starts
+    enemy turn
+    target is self.player
+
+    protecting player
+    timer has already started
+    destroy health and mana
+    enemy turn
+    target is self.player
+    '''
     
     def player_turn(self): 
         self.ui.chosen_spell = None
@@ -118,34 +128,6 @@ class Game:
         
         self.enemy.health -= randint(1, 6)
         self.player.mana -= SPELLS[self.ui.chosen_spell]['mana_cost']
-
-    ''' Attacking logic explanation
-    player turn
-    target is enemy
-    choose a spell
-    
-    check for mana validation and destroy health and mana
-        and then timer starts
-        and then enemy turn
-        and then target is player
-    
-    else display the warning message
-        player turn
-        target is enemy
-
-    enemy turn
-    target is player
-    health is destroyed
-    timer starts
-    player turn
-
-    protecting player
-    creating and destroying sprite
-    destroying health and mana
-    timer starts
-    enemy turn
-
-    '''
 
     def enemy_movement(self, dt):  
         if self.enemy.rect.collidepoint(240, self.enemy.rect.centery): self.enemy.direction = 1
@@ -163,14 +145,11 @@ class Game:
 
     def run(self):   
         while self.running: # Main game loop from the tutorial
-            dt = self.clock.tick(20) / 1000  # Converting dt to seconds
+            dt = self.clock.tick() / 1000  # Converting dt to seconds
             
             for event in pygame.event.get(): # Exit logic
                 if event.type == pygame.QUIT: self.running = False
-                if self.ui.running == False: self.running = False
 
-                # if event.type == pygame.FULLSCREEN:
-                #     pygame.display.toggle_fullscreen()
 
             self.screen.blit(self.image_assets['bg'], (0, 0))
             
@@ -202,7 +181,7 @@ class Game:
 
             # Losing section
             try:
-                if self.player.health == 0 or self.player.mana == 0:
+                if self.player.health == 0 or self.player.mana == 0 or self.ui.running == False:
                     self.player_active = False
                     text_box_surf = pygame.Surface((400, 200))
                     text_box_rect = text_box_surf.get_frect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT /2))
@@ -211,7 +190,6 @@ class Game:
                     self.winner_surf = self.winner_font.render('You lost the battle!', True, COLORS['black'], COLORS['green'])
                     self.winner_rect = self.winner_surf.get_frect(center = text_box_rect.center)
                     self.screen.blit(self.winner_surf, self.winner_rect)
-                    self.running = False
             except AttributeError: pass
 
             # Winning section
@@ -225,12 +203,10 @@ class Game:
                     self.winner_surf = self.winner_font.render('You won the battle!', True, COLORS['black'], COLORS['green'])
                     self.winner_rect = self.winner_surf.get_frect(center = text_box_rect.center)
                     self.screen.blit(self.winner_surf, self.winner_rect)
-                    self.running = False            
             except AttributeError: pass
 
             # Surrender section
             if self.ui.current_state == 'surrender':
-                self.player_active = False
                 self.killed_textbox_surf = pygame.Surface((400, 200))
                 self.killed_textbox_rect = self.killed_textbox_surf.get_frect(center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
 

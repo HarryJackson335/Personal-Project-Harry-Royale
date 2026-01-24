@@ -26,7 +26,7 @@ class Game:
             'Player Turn': Timer(2000, self.enemy_turn, False),
             'Opponent Turn': Timer(2000, self.player_turn, False),
             'destroy_textbox': Timer(2000, self.endgame, False),
-            'warning_destructor' : Timer(2000, auto_start= False),
+            'warning_destructor' : Timer(1000, auto_start = False),
             'animated_sprite_destroyer': Timer(1000, auto_start= False) 
             }        
         
@@ -156,7 +156,7 @@ class Game:
             
             if 240 <= self.enemy.rect.centerx <= 780: self.enemy.rect.centerx += self.enemy.direction * self.enemy.speed * dt
             else:
-                text_box = TextSprite('Too much user interference', 30, COLORS['black'], COLORS['green'], extra_width= self.extra_width, extra_height= self.extra_height)
+                text_box = TextSprite('Too much user interference', 30, COLORS['black'], COLORS['green'], pos = (SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT / 2 - 50),extra_width= self.extra_width, extra_height= self.extra_height)
                 self.screen.blit(text_box.surf, text_box.rect)
                 self.player_active = False
                 self.running = False
@@ -168,7 +168,8 @@ class Game:
         try:
             if self.player.health <= 0 or self.player.mana < min([SPELLS[spell]['mana_cost'] for spell in SPELLS]):
                 self.player_active = False
-                self.text_box = TextSprite('You lost the battle!', 30, COLORS['black'], COLORS['green'], extra_width = self.extra_width, extra_height = self.extra_height)
+                self.screen.fill(COLORS['black'])
+                self.text_box = TextSprite('You lost the battle!', 100, COLORS['black'], COLORS['green'], extra_width = self.extra_width, extra_height = self.extra_height)
                 self.screen.blit(self.text_box.surf, self.text_box.rect)
                 self.text_box.message = 'Endgame'
                 self.destroy_textbox = Timer(2000, self.endgame, True)
@@ -178,7 +179,8 @@ class Game:
         try:
             if self.available_enemies == 0:
                 self.player_active = False
-                self.text_box = TextSprite('You won the battle!', 30, COLORS['black'], COLORS['green'], extra_width = self.extra_width, extra_height = self.extra_height)
+                self.screen.fill(COLORS['black'])
+                self.text_box = TextSprite('You won the battle!', 100, COLORS['black'], COLORS['green'], extra_width = self.extra_width, extra_height = self.extra_height)
                 self.screen.blit(self.text_box.surf, self.text_box.rect)
                 self.text_box.message = 'Endgame'
                 self.destroy_textbox = Timer(2000, self.endgame, True)
@@ -211,14 +213,14 @@ class Game:
         
         self.opponent_ui.draw_bar(self.enemy, 'health', self.enemy.health, self.enemy.max_health, COLORS['red'], COLORS['yellow'], COLORS['green'], (200, self.enemy.rect.height) + pygame.Vector2(self.extra_width, self.extra_height))
         self.ui.draw(self.screen, self.extra_width, self.extra_height)
-        
+
         try: 
-            if self.warning.message == '' and not self.warning_destructor:
+            if self.warning.message == '':
                 self.screen.blit(self.warning.surf, self.warning.rect)
-                self.warning.message = 'Displayed'
                 self.timers['warning_destructor'].start()
-        
+
         except AttributeError: pass
+
 
     def handle_window_resizing(self):
         if (SCREEN_WIDTH, SCREEN_HEIGHT) > pygame.display.get_window_size() or (SCREEN_WIDTH, SCREEN_HEIGHT) < pygame.display.get_window_size() != (1536, 841):
@@ -226,6 +228,7 @@ class Game:
                 self.message = TextSprite('The window needs to be in default size or fullscreen to play', 30, COLORS['black'], COLORS['white'])
                 self.timers['destroy_textbox'].start()
                 self.screen.blit(self.message.surf, self.message.rect)
+
             
         else:
             self.UPDATED_SCREEN_WIDTH, self.UPDATED_SCREEN_HEIGHT = pygame.display.get_window_size()
@@ -258,6 +261,7 @@ class Game:
 
             # update() the display to display everything on screen
             pygame.display.update()
+
 
         pygame.quit()
         

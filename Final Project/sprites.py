@@ -39,7 +39,7 @@ class InfoSprite(pygame.sprite.Sprite):
                 If you run out of mana or health points, you instantly die.
                 To help ease your death, you have the option to change spells and you are not stuck with the same spells.
 
-                A little hint for you to know: the most valuable spells are the ones that cost a lot.
+                Use the up-down arrow keys to navigate the ui and press the space bar to select an option.
 
                 I would say good luck but I don't think you can stand the four most dangerous beings from the Harry Potter franchise.
             ''',

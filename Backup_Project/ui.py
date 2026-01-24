@@ -84,10 +84,8 @@ class UI:
             updated_bar_rect = pygame.FRect(bar_rect.left, bar_rect.top, attribute + (bar_rect.width - max_attribute), bar_rect.height)
             pygame.draw.rect(self.screen, color, updated_bar_rect, 0, 8)
         else: 
-            # attribute = 0
-            # self.running = False
-            pass
-        print(attribute)
+            attribute = 0
+            self.running = False
 
     def update(self, dt):
         self.input(dt)

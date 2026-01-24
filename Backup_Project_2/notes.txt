@@ -1,7 +1,0 @@
-Need to do for the project:
-
-    1. Code the timer logic properly
-    2. Code the health bar and mana bar logic
-    3. Code the attacking logic and spell restriction logic 
-    4. Code the logic for displaying spell details
-    5. Code the resizing of the window logic
