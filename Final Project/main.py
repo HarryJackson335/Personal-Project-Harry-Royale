@@ -223,7 +223,8 @@ class Game:
 
 
     def handle_window_resizing(self):
-        if (SCREEN_WIDTH, SCREEN_HEIGHT) > pygame.display.get_window_size() or (SCREEN_WIDTH, SCREEN_HEIGHT) < pygame.display.get_window_size() != (1536, 841):
+        for self.index in range(len(pygame.display.get_desktop_sizes())): pass
+        if (SCREEN_WIDTH, SCREEN_HEIGHT) > pygame.display.get_window_size() or ((SCREEN_WIDTH, SCREEN_HEIGHT) < pygame.display.get_window_size() and pygame.display.get_window_size() != (pygame.display.get_desktop_sizes()[self.index][0], pygame.display.get_desktop_sizes()[self.index][1] - 23)):
             if not self.timers['destroy_textbox']:
                 self.message = TextSprite('The window needs to be in default size or fullscreen to play', 30, COLORS['black'], COLORS['white'])
                 self.timers['destroy_textbox'].start()
@@ -234,8 +235,8 @@ class Game:
             self.UPDATED_SCREEN_WIDTH, self.UPDATED_SCREEN_HEIGHT = pygame.display.get_window_size()
             self.extra_width = (self.UPDATED_SCREEN_WIDTH - SCREEN_WIDTH) / 2
             self.extra_height = (self.UPDATED_SCREEN_HEIGHT - SCREEN_HEIGHT) / 2                
-            self.player.extra_width, self.player.extra_height = (self.extra_width - 150 if self.extra_width != 0 else 0), -(self.extra_height + 40 if self.extra_height != 0 else 0)
-            self.enemy.extra_width, self.enemy.extra_height = (self.extra_width if self.extra_width != 0 else 0, -(self.extra_height) if self.extra_height != 0 else 0)
+            self.player.extra_width, self.player.extra_height = (self.extra_width - 150 if self.extra_width != 0 else 0), -(self.extra_height + (((pygame.display.get_desktop_sizes()[self.index][1] - 23) * 40) / 841) if self.extra_height != 0 else 0)
+            self.enemy.extra_width, self.enemy.extra_height = (self.extra_width if self.extra_width != 0 else 0, -((self.extra_height * (pygame.display.get_desktop_sizes()[self.index][1] - 23)) / 841) if self.extra_height != 0 else 0)
             self.draw()
 
     def run(self):
@@ -261,7 +262,6 @@ class Game:
 
             # update() the display to display everything on screen
             pygame.display.update()
-
 
         pygame.quit()
         
