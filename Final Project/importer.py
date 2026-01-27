@@ -4,7 +4,9 @@ def audio_loader(*path):
     audio_dict = {}
     for dirpath, _, filenames in walk(join(*path)):
         for file in filenames:
-            if file.endswith('.mp3') or file.endswith('.wav') or file.endswith('.ogg'): audio_dict[file.split('.')[0]] = pygame.mixer.Sound(join(dirpath, file))
+            if file.endswith('.mp3') or file.endswith('.wav') or file.endswith('.ogg'): 
+                pygame.mixer.init()
+                audio_dict[file.split('.')[0]] = pygame.mixer.Sound(join(dirpath, file))
             else: print(f"Unsupported audio format: {file}")
     return audio_dict
 
